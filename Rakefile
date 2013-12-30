@@ -22,6 +22,9 @@ BOWER_JSON = {
   }
 }
 
+task :package_dir do
+  Dir.chdir ROOT
+end
 
 task :ember_dir do
   Dir.chdir EMBER_ROOT
@@ -66,3 +69,9 @@ task :clean => [:ember_dir] do
 end
 
 task :default => :build
+
+task :tag => [:build, :package_dir] do
+  sh "git add ."
+  sh "git commit -m 'Package #{EMBER_VERSION}'"
+  sh "git tag v#{EMBER_VERSION}"
+end
